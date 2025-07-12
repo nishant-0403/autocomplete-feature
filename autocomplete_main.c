@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include "autocomplete.h"
 
+#define MAX_WORD_COUNT 3
+#define PATH "/home/advay/Desktop/DSA_Project/Words.txt"
+
+
 int main() {
 	int numOfWords = 0;
 	int i = 0, j = 0, k = 0;
@@ -13,11 +17,12 @@ int main() {
 	Stack st;
 	TrieNode *current;
 	Trie trie;
+	printf("Tuzhi aai 1");
 	initStack(&st);
 	initStaq();
 	initTrie(&trie);
 	initPrompts();
-	FILE *fp = fopen("/home/nishant/coepAcademics/sem3_sy/dsa/dsa_project/final/smallDictionary.txt", "r");
+	FILE *fp = fopen(PATH, "r");
 	readyTrie(&trie, fp);
 	fclose(fp);
 	current = trie.root;
@@ -26,7 +31,7 @@ int main() {
 	printf("To select a prompt, enter the digit displayed before it\n");
 	
 	
-	while(numOfWords < 10) {
+	while(numOfWords < MAX_WORD_COUNT) {
 		inputArray[j] = tolower(getchar());
 		if(inputArray[j] == '\n') {
 			continue;
@@ -38,7 +43,7 @@ int main() {
 			printSelectedPrompt(asciiOfInput);
 			destroy(&trie);
 			initTrie(&trie);
-			fp = fopen("/home/nishant/coepAcademics/sem3_sy/dsa/dsa_project/final/smallDictionary.txt", "r");
+			fp = fopen(PATH, "r");
 			readyTrie(&trie, fp);
 			fclose(fp);
 			current = trie.root;
@@ -49,21 +54,22 @@ int main() {
 			j = 0;
 			numOfWords++;
 			
-			if(numOfWords >= 10)
+			if(numOfWords >= MAX_WORD_COUNT)
 				break;
 			
+			printf("\n");
 			printf("Start entering new word\n");
 			continue;	
 		}
 		
 		if (inputArray[j] == '\t' || inputArray[j] == ' ' || inputArray[j] == '.' || inputArray[j] == ',' || inputArray[j] == ';') {  // If user enters delimiter
 		
-			if(numOfWords >= 10)
+			if(numOfWords >= MAX_WORD_COUNT)
 				break;
 			printf("Start entering new word\n");
 			destroy(&trie);
 			initTrie(&trie);
-			fp = fopen("/home/nishant/coepAcademics/sem3_sy/dsa/dsa_project/final/smallDictionary.txt", "r");
+			fp = fopen(PATH, "r");
 			readyTrie(&trie, fp);
 			fclose(fp);
 			current = trie.root;
@@ -100,6 +106,7 @@ int main() {
 			
 			while(identifier == 'B') {
 				printPrompts();
+				printf("Enter 'E' to keep typing, and 'B' for backspace\n");
 				
 				for(k = 0; k < j; k++) {
 					printf("%c", inputArray[k]);
@@ -124,7 +131,7 @@ int main() {
 				printSelectedPrompt((int)identifier);
 				destroy(&trie);
 				initTrie(&trie);
-				fp = fopen("/home/nishant/coepAcademics/sem3_sy/dsa/dsa_project/final/smallDictionary.txt", "r");
+				fp = fopen(PATH, "r");
 				readyTrie(&trie, fp);
 				fclose(fp);
 				current = trie.root;
@@ -135,7 +142,7 @@ int main() {
 				j = 0;
 				numOfWords++;
 				
-				if(numOfWords >= 10)
+				if(numOfWords >= MAX_WORD_COUNT)
 					break;
 					
 				printf("Start entering new word\n");
@@ -170,7 +177,7 @@ int main() {
 		j++;
 	}
 	
-	printf("10-word limit exceeded!\n");
+	printf("%d-word limit exceeded!\n", MAX_WORD_COUNT);
 	freePrompts();
 	freeStaq();
 	destroy(&trie);
