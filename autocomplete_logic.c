@@ -44,6 +44,9 @@ void printSelectedPrompt(int digit) { // To complete word partially entered by u
 	int i = 0;
 	char ch;
 	int index = digit - 48;
+
+	if(!prompts.promptArr[index])
+		printf("Invalid input given!!");
 	
 	for(i = 0; i != prompts.lengthArray[index]; i++) {
 		ch = (prompts.promptArr[index])[i];
