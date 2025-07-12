@@ -7,19 +7,19 @@ Prompts prompts;
 
 Staq sq;
 
-void initStack(Stack *st) { //to initialise the stack
+void initStack(Stack *st) {
 	st->top = -1;
 	st->size = 8;
 }
 
-void push(Stack *st, TrieNode *t) { //to push a TrieNode* pointer onto the stack	
+void push(Stack *st, TrieNode *t) {	
 	if(st->top < st->size) {
 		st->top++;
 		st->arr[st->top] = t;
 	}
 }
 
-TrieNode* pop(Stack *st) { //to pop the top of stack
+TrieNode* pop(Stack *st) {
 	if(st->top == -1)
 		return NULL;
 	TrieNode *t = st->arr[st->top];
@@ -27,7 +27,7 @@ TrieNode* pop(Stack *st) { //to pop the top of stack
 	return t;
 }
 
-void printPrompts() { //to print the prompts stored in the global object of type Prompts
+void printPrompts() {
 
 	for(int i = 0; i <= prompts.indexOfLastPrompt; i++) {
 		printf("%d - ", i);
@@ -45,6 +45,14 @@ void printSelectedPrompt(int digit) { // To complete word partially entered by u
 	char ch;
 	int index = digit - 48;
 	
+	if(index < 0 || index >= PROMPT_COUNT) {
+		printf("Invalid input given!!\n");
+		return;
+	}
+	
+	if(!prompts.promptArr[index])
+		printf("Invalid input given!!");
+	
 	for(i = 0; i != prompts.lengthArray[index]; i++) {
 		ch = (prompts.promptArr[index])[i];
 		printf("%c", ch);
@@ -52,7 +60,7 @@ void printSelectedPrompt(int digit) { // To complete word partially entered by u
 	printf("\n");
 }
 
-int isEmpty() { //to check if staq is empty
+int isEmpty() {
 	if(sq.front == NULL) {
 		return 1;
 	}
@@ -61,7 +69,7 @@ int isEmpty() { //to check if staq is empty
 	}
 }
 
-void initPrompts() { //to initialise the object of type Prompts
+void initPrompts() {
 	prompts.indexOfLastPrompt = -1;
 	prompts.promptArr[0] = NULL;
 }
@@ -76,21 +84,21 @@ void freePrompts() { // To free the global structure 'prompts' after every chara
 	}
 }
 
-void initTrie(Trie *t) { //to initialise the object of type Trie
+void initTrie(Trie *t) {
 	t->root = NULL;
 }
 
-void initStaq() { //to initialise staq
+void initStaq() {
 	sq.front = sq.rear = NULL;
 }
 
-void freeStaq() { //to free staq
+void freeStaq() {
 	while(!isEmpty()) {
 		popStaq();
 	}
 }
 
-void pushStaq(char ch) { //to push an SQNode on the staq (rear end)
+void pushStaq(char ch) {
 	SQNode *t;
 	t = (SQNode *)malloc(sizeof(SQNode));
 	t->character = ch;
@@ -108,7 +116,7 @@ void pushStaq(char ch) { //to push an SQNode on the staq (rear end)
 	}
 } 
 
-void popStaq() { //to pop the top of staq structure (rear end)
+void popStaq() {
 	if(isEmpty()) {
 		return;
 	}
@@ -124,7 +132,7 @@ void popStaq() { //to pop the top of staq structure (rear end)
 	sq.rear->next = NULL;	
 }
 
-char deStaq() { //to dequeue the front of staq structure (front end)
+char deStaq() {
 	if(isEmpty()) {
 		return '\0';
 	}
@@ -142,7 +150,7 @@ char deStaq() { //to dequeue the front of staq structure (front end)
 	return x;
 }
 
-int findLength() { //to find length of the resultant string stored in the staq
+int findLength() {
 	int count = 1;
 	SQNode *p = sq.front;
 	
@@ -179,7 +187,7 @@ void givePrompt(char *arr, int len) { // To print the generated prompts
 	printf("\n");
 }
 
-void helperFunction() { //gets called in the recursive traverse(), and calls givePrompt() to give 1 prompt for each call
+void helperFunction() { // To facilitate printing and recording prompts, and adjusting the Staq
 	int i = 0;
 	int len = findLength();
 	char tempArr[len];
@@ -260,7 +268,7 @@ void destroy(Trie *t) { // To destroy the entire Trie structure
 }
 
 
-void printStaq() { //to print the current contents of staq
+void printStaq() {
 	SQNode *p = sq.front;
 	
 	while(p) {
